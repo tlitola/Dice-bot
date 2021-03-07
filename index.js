@@ -10,7 +10,7 @@ client.on('ready', () => {
 
 client.on('message', async message =>{
   if (message.content.startsWith(process.env.COMMAND_PREFIX)){
-    const content = message.content.replaceAll(process.env.COMMAND_PREFIX, "").trim()
+    const content = message.content.replace(process.env.COMMAND_PREFIX, "").trim()
   
     const results = []
 
