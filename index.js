@@ -3,13 +3,16 @@ require('dotenv').config()
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
+const prefixes = []
+
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
+  prefixes = process.env.COMMAND_PREFIX.split(',')
 });
 
 
 client.on('message', async message =>{
-  if (message.content.startsWith(process.env.COMMAND_PREFIX)){
+  if (prefixes.some(prefix => message.content.startsWith(prefix.trim()))){
     const content = message.content.replace(process.env.COMMAND_PREFIX, "").trim()
   
     const results = []
