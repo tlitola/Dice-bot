@@ -1,0 +1,16 @@
+{
+  "name": "dice-bot",
+  "version": "1.0.0",
+  "description": "Basic discord dice bot",
+  "main": "index.js",
+  "author": "Touko Litola",
+  "license": "ISC",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^12.5.1",
+    "dotenv": "^8.2.0",
+    "nodemon": "^2.0.7"
+  }
+}
