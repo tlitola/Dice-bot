@@ -26,7 +26,10 @@ client.on('message', async message =>{
       .setTitle('Rolling dice. May the luck be in your favor.')
       .setDescription('Dovie\'andi se tovya sagain.')
 
-    const rolls = content.split(' ').filter(roll => ((roll.length === 2 && roll[0] === 'd' && isNumeric(roll[1])) || (roll.length === 3 && isNumeric(roll[0]) && roll[1] === 'd' && isNumeric(roll[2]))))
+    const rolls = content.split(' ').filter(roll => {
+      const roll_parts = roll.split('d')
+      return roll_parts.length === 2 && ((roll_parts[0] === '' && isNumeric(roll_parts[1])) || (isNumeric(roll_parts[0]) && isNumeric(roll_parts[1])))
+    })
     rolls.forEach( roll => {
       let [multiplier, dice] = roll.split('d')
       if (multiplier === ''){
