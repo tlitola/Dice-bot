@@ -16,57 +16,38 @@ client.on('ready', () => {
 client.on('message', async message =>{
   let prefix = ''
   if (roll_prefixes.some(pr => {
-    prefix = pr 
-    return message.content.startsWith(pr.trim())
+    prefix = pr.trimStart()
+    return message.content.startsWith(pr.trimStart())
   })){
     const content = message.content.replace(prefix, '').trim()
-  
-    const results = []
-
-    const rolls = content.split(' ')
-    rolls.forEach( roll => {
-      if(roll.includes('d')){
-        let [multiplier, dice] = roll.split('d')
-        if (multiplier === ''){
-          multiplier = '1'
-        }
-
-        let result = []
-        if(isNumeric(multiplier) && isNumeric(dice)){
-          for (let i = 0; i < multiplier; i++){
-              result.push(Math.floor(Math.random() * dice) + 1)
-          }
-        }
-        results.push(result)
-      }
-    })
 
     const embed = new Discord.MessageEmbed()
       .setColor('#851314')
       .setTitle('Rolling dice. May the luck be in your favor.')
       .setDescription('Dovie\'andi se tovya sagain.')
 
-    if(results.length>0){
-      rolls.forEach((roll, index)=>{
-        if (roll.includes('d')) {
-          let [multiplier, dice] = roll.split('d')
-          if (multiplier === '') {
-            multiplier = '1'
-          }
-          if (isNumeric(multiplier) && isNumeric(dice)) {
-            embed.addField(roll + ':', results[index].join(' '))
-          }
-        }
-      })
-    } else{
-      embed.addField('Usage:', prefix + ' <Amount of throws>d<how many sided dice>')
+    const rolls = content.split(' ').filter(roll => ((roll.length === 2 && roll[0] === 'd' && isNumeric(roll[1])) || (roll.length === 3 && isNumeric(roll[0]) && roll[1] === 'd' && isNumeric(roll[2]))))
+    rolls.forEach( roll => {
+      let [multiplier, dice] = roll.split('d')
+      if (multiplier === ''){
+        multiplier = '1'
+      }
+      let result = []
+      for (let i = 0; i < multiplier; i++){
+        result.push(Math.floor(Math.random() * dice) + 1)
+      }
+      embed.addField(roll + ':', result.join(' '))
+    })
+
+    if(rolls.length === 0) {
+      embed.addField('Usage:', prefix + ' <Amount of throws>d<How many sided dice>')
     }
 
     message.channel.send(embed)
   }
   if (cl_prefixes.some(pr => {
-    prefix = pr
-    return message.content.startsWith(pr.trim())
+    prefix = pr.trimStart()
+    return message.content.startsWith(pr.trimStart())
   })) {
     const content = message.content.replace(prefix, '').trim()
 
